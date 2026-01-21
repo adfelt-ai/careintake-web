@@ -82,32 +82,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const userInitials = getInitials(userName)
 
   return (
-    <Sidebar {...props}>
-      <SidebarHeader className="flex items-center justify-center p-6 border-b">
+    <Sidebar {...props} className="border-r border-sidebar-border bg-sidebar">
+      <SidebarHeader className="flex items-center justify-center pt-8 pb-4">
         <Image
           src="/adfelt-logo.png"
           alt="Adfelt Logo"
-          width={120}
-          height={40}
+          width={130}
+          height={42}
           priority
           className="object-contain"
         />
       </SidebarHeader>
-      <SidebarContent className="p-4">
-        <SidebarMenu className="space-y-2">
+      <SidebarContent className="px-3 py-4">
+        <SidebarMenu className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon
             return (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={isActive} className="w-full justify-start px-4 py-3">
-                  <Link href={item.href}>
+                <SidebarMenuButton 
+                  asChild 
+                  isActive={isActive} 
+                  className={`w-full justify-start px-4 py-6 transition-all duration-200 ease-in-out hover:bg-sidebar-accent/50 ${isActive ? 'bg-primary/10 text-primary font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                >
+                  <Link href={item.href} className="flex items-center gap-3">
                     {Icon && (
-                      <span className="mr-2">
-                        <Icon className="h-4 w-4" />
+                      <span className={`${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                        <Icon className="h-5 w-5" />
                       </span>
                     )}
-                    {item.title}
+                    <span className="text-sm">{item.title}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -115,21 +119,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="border-t p-2">
+      <SidebarFooter className="p-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground w-full justify-start px-3 py-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground bg-sidebar-background cursor-pointer transition-colors duration-200 border shadow-sm"
+              className="w-full justify-start px-3 py-3 rounded-xl hover:bg-sidebar-accent transition-colors duration-200 border border-sidebar-border/50 shadow-[0_2px_8px_rgba(0,0,0,0.04)] bg-white dark:bg-sidebar-accent/10"
             >
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-xs font-bold shadow-sm">
                   {userInitials}
                 </div>
                 <div className="flex flex-col gap-0.5 overflow-hidden text-left min-w-0 flex-1">
-                  <span className="truncate text-sm font-semibold">{userName}</span>
+                  <span className="truncate text-sm font-semibold text-foreground">{userName}</span>
                   {userEmail && (
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-muted-foreground/80">
                       {userEmail}
                     </span>
                   )}
@@ -138,18 +142,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-60 rounded-xl border border-border/50 shadow-lg p-2"
             side="bottom"
             align="end"
-            sideOffset={4}
+            sideOffset={8}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+              <div className="flex items-center gap-3 px-2 py-2 text-left text-sm">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-bold">
                   {userInitials}
                 </div>
                 <div className="flex flex-col gap-0.5 overflow-hidden">
-                  <span className="truncate font-semibold">{userName}</span>
+                  <span className="truncate font-semibold text-foreground">{userName}</span>
                   {userEmail && (
                     <span className="truncate text-xs text-muted-foreground">
                       {userEmail}
@@ -158,20 +162,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/profile" className="cursor-pointer">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+            <DropdownMenuSeparator className="my-2 bg-border/50" />
+            <DropdownMenuItem asChild className="rounded-lg focus:bg-sidebar-accent cursor-pointer">
+              <Link href="/profile" className="flex items-center px-2 py-2">
+                <User className="mr-3 h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Profile</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="my-2 bg-border/50" />
             <DropdownMenuItem
               onClick={logout}
-              className="cursor-pointer text-destructive focus:text-destructive"
+              className="rounded-lg focus:bg-destructive/10 focus:text-destructive cursor-pointer px-2 py-2 text-destructive/80"
             >
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <LogOut className="mr-3 h-4 w-4" />
+              <span className="text-sm font-medium">Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

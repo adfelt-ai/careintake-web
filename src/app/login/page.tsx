@@ -51,19 +51,19 @@ const LoginPage = () => {
         data.email,
         data.password
       );
-      
+
       // Firebase automatically maintains the session
       // The AuthProvider will detect the auth state change
-      
+
       toast.success("Welcome back!", {
         description: `Successfully signed in as ${userCredential.user.email}`,
       });
-      
+
       router.push("/dashboard");
     } catch (error: any) {
       let errorTitle = "Login Failed";
       let errorMessage = "Invalid email or password. Please try again.";
-      
+
       // Handle specific Firebase Auth errors
       switch (error.code) {
         case "auth/user-not-found":
@@ -102,7 +102,7 @@ const LoginPage = () => {
           errorTitle = "Login Error";
           errorMessage = error.message || "An unexpected error occurred. Please try again.";
       }
-      
+
       toast.error(errorTitle, {
         description: errorMessage,
       });
@@ -203,11 +203,11 @@ const LoginPage = () => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />                
+                />
 
                 <Button
                   type="submit"
-                  className="w-full h-11 text-base font-semibold"
+                  className="w-full h-11 text-base font-semibold cursor-pointer"
                   disabled={isLoading}
                 >
                   {isLoading ? (
